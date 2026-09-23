@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - 01-wrangling-bugs
+          - 02-delivery-pipeline
+          - 03-ml-test-score
+          - 04-stubbing-dependencies
+          - 05-error-handling
+          - 06-component-integration
+          - 07-compound-ai
+          - 08-data-linter
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run pytest -v
+
+  pipeline:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 02-delivery-pipeline
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked --all-groups
+      - name: Run the DVC pipeline and show metrics
+        run: |
+          uv run dvc repro
+          uv run dvc metrics show
+      - name: Run the notebook with papermill
+        working-directory: 02-delivery-pipeline/notebooks
+        run: uv run papermill delivery_exploration.ipynb ../build/run.ipynb -p test_size 0.2

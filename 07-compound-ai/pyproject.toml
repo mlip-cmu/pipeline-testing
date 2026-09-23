@@ -1,0 +1,18 @@
+[project]
+name = "compound-ai"
+version = "0.1.0"
+description = "Testing prompt templates, RAG, and an agent with fake and real LLMs"
+requires-python = ">=3.12"
+dependencies = ["litellm>=1.90", "scikit-learn>=1.5"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = [".", "tests"]
+testpaths = ["tests"]
+markers = ["llm: calls a real LLM (set RUN_LLM_TESTS=1 and LLM_MODEL)"]
+filterwarnings = ["ignore:Item .* is using the `ReadOnly` qualifier:UserWarning"]
