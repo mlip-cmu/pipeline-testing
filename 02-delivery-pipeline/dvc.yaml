@@ -1,0 +1,20 @@
+stages:
+  prepare_train:
+    cmd: python -m delivery.stages prepare data/train.csv build/train_features.csv
+    deps: [data/train.csv, delivery/features.py, delivery/pipeline.py]
+    outs: [build/train_features.csv]
+  prepare_test:
+    cmd: python -m delivery.stages prepare data/test.csv build/test_features.csv
+    deps: [data/test.csv, delivery/features.py, delivery/pipeline.py]
+    outs: [build/test_features.csv]
+  train:
+    cmd: python -m delivery.stages train build/train_features.csv build/model.joblib --alpha ${train.alpha}
+    deps: [build/train_features.csv, delivery/model.py]
+    params: [train.alpha]
+    outs: [build/model.joblib]
+  evaluate:
+    cmd: python -m delivery.stages evaluate build/model.joblib build/test_features.csv metrics.json
+    deps: [build/model.joblib, build/test_features.csv]
+    metrics:
+      - metrics.json:
+          cache: false

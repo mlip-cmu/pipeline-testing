@@ -1,0 +1,80 @@
+schema: '2.0'
+stages:
+  prepare_train:
+    cmd: python -m delivery.stages prepare data/train.csv 
+      build/train_features.csv
+    deps:
+    - path: data/train.csv
+      hash: md5
+      md5: 229a93cb39bf18d729071efb20d291e8
+      size: 364691
+    - path: delivery/features.py
+      hash: md5
+      md5: 49be82ecb01cbd765106fd165e382421
+      size: 2437
+    - path: delivery/pipeline.py
+      hash: md5
+      md5: 468f8fbcaf15c7561069a8602b4086f8
+      size: 1403
+    outs:
+    - path: build/train_features.csv
+      hash: md5
+      md5: 1928c57dabdc40c21feed6008937ae43
+      size: 1106288
+  prepare_test:
+    cmd: python -m delivery.stages prepare data/test.csv build/test_features.csv
+    deps:
+    - path: data/test.csv
+      hash: md5
+      md5: 8b0b37a595b8f453bbf0bad8d25d56fd
+      size: 181690
+    - path: delivery/features.py
+      hash: md5
+      md5: 49be82ecb01cbd765106fd165e382421
+      size: 2437
+    - path: delivery/pipeline.py
+      hash: md5
+      md5: 468f8fbcaf15c7561069a8602b4086f8
+      size: 1403
+    outs:
+    - path: build/test_features.csv
+      hash: md5
+      md5: 8f9cefcae1ef6c6dc8c8974f182442d7
+      size: 551711
+  train:
+    cmd: python -m delivery.stages train build/train_features.csv 
+      build/model.joblib --alpha 1.0
+    deps:
+    - path: build/train_features.csv
+      hash: md5
+      md5: 1928c57dabdc40c21feed6008937ae43
+      size: 1106288
+    - path: delivery/model.py
+      hash: md5
+      md5: 84b3bd0477fb54bd542c157921c513d3
+      size: 885
+    params:
+      params.yaml:
+        train.alpha: 1.0
+    outs:
+    - path: build/model.joblib
+      hash: md5
+      md5: c7c48bd3590912b4a21fd080dad7f1a5
+      size: 1801
+  evaluate:
+    cmd: python -m delivery.stages evaluate build/model.joblib 
+      build/test_features.csv metrics.json
+    deps:
+    - path: build/model.joblib
+      hash: md5
+      md5: c7c48bd3590912b4a21fd080dad7f1a5
+      size: 1801
+    - path: build/test_features.csv
+      hash: md5
+      md5: 8f9cefcae1ef6c6dc8c8974f182442d7
+      size: 551711
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 68407deb633cc282684f5de5be6d59c0
+      size: 70
