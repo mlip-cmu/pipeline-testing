@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, field
 from datetime import date
+from typing import Callable
 
 
 @dataclass
@@ -27,7 +28,7 @@ class Workspace:
     events: list[Event] = field(default_factory=list)
     outbox: list[Email] = field(default_factory=list)
     user: str = "me@example.com"
-    confirm_send: callable = lambda email: True
+    confirm_send: Callable[[Email], bool] = lambda email: True
 
     def get_email(self, start: str, end: str) -> list[dict]:
         first, last = date.fromisoformat(start), date.fromisoformat(end)
