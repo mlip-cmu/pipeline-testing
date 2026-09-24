@@ -10,8 +10,12 @@ def _with_unit(values: pd.Series) -> pd.Series:
     return pd.to_numeric(parts[0]) * parts[1].map(UNITS)
 
 
+def parse_size(sizes: pd.Series) -> pd.Series:
+    return _with_unit(sizes.replace('Varies with device', None)).astype(float)
+
+
 def convert_size(df: pd.DataFrame) -> pd.DataFrame:
-    df['Size'] = _with_unit(df['Size'].replace('Varies with device', None)).astype(float)
+    df['Size'] = parse_size(df['Size'])
     return df
 
 

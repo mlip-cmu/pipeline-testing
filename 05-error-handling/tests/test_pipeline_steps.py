@@ -46,7 +46,7 @@ class StubNotifier:
     def __init__(self):
         self.messages = []
 
-    def send_notification(self, message):
+    def send(self, message):
         self.messages.append(message)
 
 

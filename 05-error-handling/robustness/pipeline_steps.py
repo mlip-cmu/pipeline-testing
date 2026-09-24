@@ -88,7 +88,7 @@ class ModelStore(Protocol):
 
 
 class Notifier(Protocol):
-    def send_notification(self, message: str) -> None: ...
+    def send(self, message: str) -> None: ...
 
 
 def deploy(model, name: str, store: ModelStore, notifier: Notifier) -> str:
@@ -100,7 +100,7 @@ def deploy(model, name: str, store: ModelStore, notifier: Notifier) -> str:
         if actual != expected:
             raise DeploymentError(f"Checksum mismatch after upload: {actual} != {expected}")
     except Exception as e:
-        notifier.send_notification(f"Deployment of {name} failed: {e}")
+        notifier.send(f"Deployment of {name} failed: {e}")
         if isinstance(e, DeploymentError):
             raise
         raise DeploymentError(str(e)) from e

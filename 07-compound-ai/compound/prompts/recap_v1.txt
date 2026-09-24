@@ -1,0 +1,7 @@
+Summarize the important unread messages for $user in one or two sentences.
+Ignore newsletters and automated notifications.
+
+Messages:
+$messages
+
+Reply with only a JSON object: {"summary": "...", "message_ids": [ids of the messages in the summary]}

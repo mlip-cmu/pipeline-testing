@@ -30,3 +30,16 @@ def test_agent_handles_tool_failure_with_real_llm():
 def test_rag_answer_uses_documents():
     answer = answer_question("How much is delivery for a $15 order?", TfidfRetriever(load_documents()), LiteLLM())
     assert "2.99" in answer.text
+
+
+@pytest.mark.llm
+def test_recap_smoke_test_with_real_model():
+    import time
+
+    from compound.recap import SAMPLE_MESSAGES, summarize_unread
+
+    start = time.perf_counter()
+    recap = summarize_unread(SAMPLE_MESSAGES, LiteLLM())
+    assert recap.summary
+    assert set(recap.message_ids) <= {3, 4, 5, 7, 8}
+    assert time.perf_counter() - start < 60

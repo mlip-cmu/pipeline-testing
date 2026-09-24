@@ -6,13 +6,39 @@ from datetime import date, timedelta
 
 
 class ScriptedLLM:
-    def __init__(self, *replies: str):
-        self.replies = list(replies)
-        self.prompts: list[str] = []
+    def __init__(self, *replies):
+        self.replies, self.prompts = list(replies), []
 
-    def __call__(self, prompt: str) -> str:
-        self.prompts.append(prompt)
-        return self.replies[min(len(self.prompts), len(self.replies)) - 1]
+    def __call__(self, prompt):
+        self.prompts.append(prompt)   # observability: what did the model see?
+        return self.replies.pop(0)    # controllability: what does it answer?
+
+
+class FlakyModel:
+    def __init__(self, failures):
+        self.failures, self.calls = list(failures), 0
+
+    def __call__(self, prompt):
+        self.calls += 1
+        if self.failures:
+            raise self.failures.pop(0)
+        return "ok"
+
+
+class FakeOutbox:
+    """Sends the email, but can lose the first acknowledgment. Deduplicates by idempotency key, like a real API."""
+
+    def __init__(self, fail_first_ack=False):
+        self.sent, self.keys, self.fail_next_ack = [], set(), fail_first_ack
+
+    def send(self, email, idempotency_key):
+        if idempotency_key not in self.keys:
+            self.keys.add(idempotency_key)
+            self.sent.append(email)
+        if self.fail_next_ack:
+            self.fail_next_ack = False
+            raise TimeoutError("acknowledgment timed out")
+        return f"sent-{len(self.sent)}"
 
 
 class RuleBasedAgentLLM:

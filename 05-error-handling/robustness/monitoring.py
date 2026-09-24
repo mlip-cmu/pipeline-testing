@@ -11,14 +11,14 @@ class ServiceUnavailable(Exception):
 
 
 class NotificationService(Protocol):
-    def send_notification(self, message: str) -> None: ...
+    def send(self, message: str) -> None: ...
 
 
 class SlackNotificationService:
     def __init__(self, webhook_url: str):
         self.webhook_url = webhook_url
 
-    def send_notification(self, message: str) -> None:
+    def send(self, message: str) -> None:
         httpx.post(self.webhook_url, json={"text": message}, timeout=5).raise_for_status()
 
 
@@ -70,7 +70,7 @@ class Monitor:
         errors = self.server.metrics()["errors_total"]
         new_errors, self._last_errors = errors - self._last_errors, errors
         if new_errors > self.max_errors:
-            self.notifications.send_notification(f"{new_errors} failed requests in the last {self.interval}s")
+            self.notifications.send(f"{new_errors} failed requests in the last {self.interval}s")
 
     def _run(self) -> None:
         while not self._stop.wait(self.interval):

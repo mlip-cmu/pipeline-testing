@@ -3,7 +3,14 @@ name = "compound-ai"
 version = "0.1.0"
 description = "Testing prompt templates, RAG, and an agent with fake and real LLMs"
 requires-python = ">=3.12"
-dependencies = ["litellm>=1.90", "scikit-learn>=1.5"]
+dependencies = [
+    "fastapi>=0.141.1",
+    "httpx2>=2.13.1",
+    "jinja2>=3.1.6",
+    "litellm>=1.90",
+    "scikit-learn>=1.5",
+    "uvicorn>=0.53.0",
+]
 
 [dependency-groups]
 dev = ["pytest>=8"]

@@ -4,12 +4,16 @@ import numpy as np
 import pandas as pd
 
 
-def convert_size(df: pd.DataFrame) -> pd.DataFrame:
-    df['Size'] = df['Size'].replace('Varies with device', np.nan)
-    num = df.Size.replace(r'[kM]+$', '', regex=True).astype(float)
-    factor = df.Size.str.extract(r'[\d\.]+([KM]+)', expand=False)
+def parse_size(sizes: pd.Series) -> pd.Series:
+    sizes = sizes.replace('Varies with device', np.nan)
+    num = sizes.replace(r'[kM]+$', '', regex=True).astype(float)
+    factor = sizes.str.extract(r'[\d\.]+([KM]+)', expand=False)
     factor = factor.replace(['k', 'M'], [10**3, 10**6]).fillna(1)
-    df['Size'] = num * factor.astype(int)
+    return num * factor.astype(int)
+
+
+def convert_size(df: pd.DataFrame) -> pd.DataFrame:
+    df['Size'] = parse_size(df['Size'])
     return df
 
 

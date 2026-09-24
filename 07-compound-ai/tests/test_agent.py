@@ -19,7 +19,7 @@ def test_agent_terminates():
 
 
 def test_agent_stops_at_step_budget():
-    llm = ScriptedLLM('ACTION: get_email {"start": "2026-09-23", "end": "2026-09-23"}')
+    llm = ScriptedLLM(*['ACTION: get_email {"start": "2026-09-23", "end": "2026-09-23"}'] * 4)
     result = react_agent("Summarize my email", max_steps=4, llm=llm, today=TODAY)
     assert not result.terminated
     assert result.steps_taken == 4
@@ -36,6 +36,19 @@ def test_agent_handles_tool_failure():
                          max_steps=10, llm=llm, today=TODAY)
     assert "unavailable" in result.answer.lower() or result.terminated
     assert "Calendar API unavailable" in llm.prompts[-1]
+
+
+def test_tool_failure_is_recorded_outside_the_answer():
+    """Fail-plausible: the model may turn the error into a fluent answer, so check the harness state."""
+    def failing_calendar(start, end):
+        raise ConnectionError("Calendar API unavailable")
+
+    llm = ScriptedLLM('ACTION: get_calendar {"start": "2026-09-24", "end": "2026-09-24"}',
+                      "FINAL ANSWER: You have no meetings tomorrow.")
+    result = react_agent("What meetings do I have tomorrow?", tools={"get_calendar": failing_calendar},
+                         llm=llm, today=TODAY)
+    assert result.answer == "You have no meetings tomorrow."
+    assert result.tool_errors == ["get_calendar: ConnectionError: Calendar API unavailable"]
 
 
 def test_unknown_tool_is_reported_to_llm():

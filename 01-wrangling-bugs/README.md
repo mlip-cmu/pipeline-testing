@@ -43,6 +43,7 @@ corrected versions (`wrangling/fixed.py`), and two groups of tests:
 
 * `test_happy_path.py` – tests written from the first rows of the data, the rows seen in the notebook.
 * `test_edge_cases.py` – tests written after thinking about what else is in the data: other units, decimals, missing values, types.
+* `test_parse_size.py` – the test from the slide *Anatomy of a Unit Test*.
 
 ```sh
 uv run pytest                                   # fixed version: all tests pass (and the notebook runs)

@@ -10,10 +10,9 @@ that expands on the code snippets from the slides.
 | [`02-delivery-pipeline`](02-delivery-pipeline) | Pipelines are Code, Test the Modules, Orchestrating Functions, End-To-End Test, Tracking Model Qualities | Notebook → modular pipeline; unit, integration, and end-to-end tests; DVC; MLflow |
 | [`03-ml-test-score`](03-ml-test-score) | ML Test Score, Case Study: Covid-19 Detection | Data, model, infrastructure, and monitoring tests from the rubric |
 | [`04-stubbing-dependencies`](04-stubbing-dependencies) | Testing across boundaries | Decouple code from an external API; stubs and mocks |
-| [`05-error-handling`](05-error-handling) | Testing Error Handling / Infrastructure Robustness, Test Monitoring | Retries, fault injection with stubs, error logging with Prometheus, monitor tests |
+| [`05-error-handling`](05-error-handling) | Test Recovery Mechanisms with Stub, Error Logging, Test Monitoring | Retries, fault injection with stubs, error logging with Prometheus, monitor tests |
 | [`06-component-integration`](06-component-integration) | Test Integration of Components | Ensemble of model services with timeouts, tested against real HTTP servers |
-| [`07-compound-ai`](07-compound-ai) | Compound AI Systems, RAG, AI Agents, Testing Compound AI System | Prompt templates, RAG, and a ReAct agent; tests with fake LLMs; any LLM via litellm |
-| [`08-data-linter`](08-data-linter) | Bonus: Data Linter at Google | Heuristic checks for miscoded data, outliers, and packaging errors |
+| [`07-compound-ai`](07-compound-ai) | Unit Tests with LLM Calls, Record and Replay, Subtle Bugs in Context Assembly Code, Agents, Inject Model API Faults | Stubbed and recorded LLMs, context assembly bugs, fallback and idempotent retries, an agent harness; any LLM via litellm |
 
 ## Setup
 

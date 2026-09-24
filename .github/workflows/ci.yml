@@ -18,7 +18,6 @@ jobs:
           - 05-error-handling
           - 06-component-integration
           - 07-compound-ai
-          - 08-data-linter
     defaults:
       run:
         working-directory: ${{ matrix.project }}

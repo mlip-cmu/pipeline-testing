@@ -14,7 +14,7 @@ Slides: *General Error Handling Strategies*, *Test Recovery Mechanisms with Stub
 | `robustness/monitoring.py` | A prediction server, a monitor that watches its error count, a Slack notification service |
 | `tests/test_retry.py` | `FailedConnection` stub injects timeouts: no problem, recoverable, not recoverable; retries are counted |
 | `tests/test_pipeline_steps.py` | Stubs for the data source, model store, and notifier; errors are raised, repaired, logged, or reported |
-| `tests/test_monitoring.py` | Stop the server, send requests, assert that the mock notification service got a message |
+| `tests/test_monitoring.py` | Stop the server, send requests, assert that the fake notifier got a message |
 | `demo.py` | Real downloads with retries; metrics on http://localhost:8000/metrics |
 
 ## Run

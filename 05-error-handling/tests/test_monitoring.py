@@ -5,14 +5,19 @@ import pytest
 from robustness.monitoring import Monitor, PredictionServer, ServiceUnavailable
 
 
-class MyNotificationService:
+class FakeNotifier:
     def __init__(self):
         self.messages = []
         self.received_notification = threading.Event()
 
-    def send_notification(self, message):
-        self.messages.append(message)
+    def send(self, msg):
+        self.messages.append(msg)
         self.received_notification.set()
+
+
+class FakeServer(PredictionServer):
+    def __init__(self):
+        super().__init__(model=lambda features: 42)
 
 
 def send_requests(server, n):
@@ -25,11 +30,21 @@ def send_requests(server, n):
 
 @pytest.fixture
 def server():
-    return PredictionServer(model=lambda features: 42)
+    return FakeServer()
+
+
+def test_alert_when_server_down():
+    server = FakeServer()
+    notifier = FakeNotifier()
+    monitor = Monitor(server, notifier)
+    server.stop()
+    send_requests(server, 2)
+    monitor.check()
+    assert len(notifier.messages) == 1
 
 
 def test_monitor_notifies_when_server_is_down(server):
-    notifications = MyNotificationService()
+    notifications = FakeNotifier()
     monitor = Monitor(server, notifications, interval=0.05).start()
     server.stop()
     send_requests(server, 2)
@@ -38,7 +53,7 @@ def test_monitor_notifies_when_server_is_down(server):
 
 
 def test_monitor_stays_quiet_when_server_is_healthy(server):
-    notifications = MyNotificationService()
+    notifications = FakeNotifier()
     monitor = Monitor(server, notifications, interval=0.05).start()
     send_requests(server, 20)
     assert not notifications.received_notification.wait(timeout=0.3)
@@ -46,7 +61,7 @@ def test_monitor_stays_quiet_when_server_is_healthy(server):
 
 
 def test_single_failure_is_tolerated(server):
-    notifications = MyNotificationService()
+    notifications = FakeNotifier()
     monitor = Monitor(server, notifications, interval=10)
     server.stop()
     send_requests(server, 1)
