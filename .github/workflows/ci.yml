@@ -47,3 +47,17 @@ jobs:
       - name: Run the notebook with papermill
         working-directory: 02-delivery-pipeline/notebooks
         run: uv run papermill delivery_exploration.ipynb ../build/run.ipynb -p test_size 0.2
+
+  meeting-agent:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 08-meeting-agent
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Build the graphs (no tests in this project, on purpose)
+        run: uv run python -m meeting_agent graph

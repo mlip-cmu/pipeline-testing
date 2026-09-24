@@ -1,0 +1,19 @@
+[00:00:05] Priya: Okay, let's start. Quick round first. Ann?
+[00:00:12] Ann: I finished the login page, so #12 can be closed. The review from Bo is done.
+[00:00:25] Bo: Yes, I approved it yesterday.
+[00:00:31] Priya: Great, close #12. Bo, what about the export feature?
+[00:00:40] Bo: Still working on #7. I think we could maybe drop the PDF export,
+but I want to ask the customer first.
+[00:01:02] Priya: Okay, let's not close it yet.
+[00:01:10] Marcus: The CI pipeline failed three times this week because of the flaky upload test.
+Someone should look into it.
+[00:01:22] Priya: Let's make a new issue for the flaky upload test. Marcus, can you take it?
+[00:01:28] Marcus: Sure.
+[00:01:35] Ann: Also, I can take over #5, the password reset emails, since Bo is busy with the export.
+[00:01:44] Bo: Please do, thanks Ann.
+[00:01:50] Priya: Assign #5 to Ann then. And the dashboard bug, that's #99, right?
+[00:01:58] Marcus: I thought it was #19. Not sure.
+[00:02:04] Priya: Let's check after the meeting. Anything else? Oh, and Jordan from the design team
+wants to own the new onboarding screens.
+[00:02:15] Ann: Sounds good. One more thing for #3: we decided to use Postgres instead of SQLite.
+[00:02:24] Priya: Please write that down on the issue. Okay, thanks everyone.
