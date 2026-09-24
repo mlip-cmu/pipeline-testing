@@ -2,11 +2,11 @@
   "model": "hand-written example replies",
   "recordings": [
     {
-      "prompt": "Summarize the important unread messages for you in one or two sentences.\nIgnore newsletters and automated notifications.\n\nMessages:\n[3] carol: Standup moves to 10am tomorrow.\n[4] ci-bot: Build #512 passed.\n[5] newsletter: This week in ML: 10 papers you should read.\n[7] alice: Please review the deployment checklist before Friday.\n[8] ci-bot: Build #513 passed.\n\nReply with only a JSON object: {\"summary\": \"...\", \"message_ids\": [ids of the messages in the summary]}\n",
+      "prompt": "Summarize the important unread messages for you in one or two sentences.\nIgnore newsletters and automated notifications.\n\nMessages:\n[3] carol: Standup moves to 10am tomorrow.\n[4] ci-bot: Build #512 passed.\n[5] newsletter: This week in ML: 10 papers you should read.\n[7] alice: Please review the deployment checklist before Friday.\n[8] ci-bot: Build #513 passed.\n\nReply with only a JSON object: {\"summary\": \"...\", \"message_ids\": [ids of the messages in the summary]}",
       "reply": "{\"summary\": \"Standup moves to 10am tomorrow, and Alice asks you to review the deployment checklist before Friday.\", \"message_ids\": [3, 7]}"
     },
     {
-      "prompt": "Summarize the important unread messages for you in one or two sentences.\nIgnore newsletters and automated notifications.\n\nMessages:\n[2] bob: The demo server is down, can you restart it?\n\nReply with only a JSON object: {\"summary\": \"...\", \"message_ids\": [ids of the messages in the summary]}\n",
+      "prompt": "Summarize the important unread messages for you in one or two sentences.\nIgnore newsletters and automated notifications.\n\nMessages:\n[2] bob: The demo server is down, can you restart it?\n\nReply with only a JSON object: {\"summary\": \"...\", \"message_ids\": [ids of the messages in the summary]}",
       "reply": "{\"summary\": \"Bob says the demo server is down and asks you to restart it.\", \"message_ids\": [2]}"
     }
   ]

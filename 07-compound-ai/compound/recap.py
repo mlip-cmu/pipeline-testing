@@ -2,9 +2,8 @@
 
 from dataclasses import dataclass, field
 
-from compound.context import InvalidModelReply, parse_recap
+from compound.context import InvalidModelReply, load_prompt, parse_recap
 from compound.llm import LLM
-from compound.prompts import PromptTemplate
 
 
 @dataclass
@@ -35,7 +34,7 @@ SAMPLE_MESSAGES = [
 
 def recap_prompt(unread: list[Message], user: str) -> str:
     lines = "\n".join(f"[{m.id}] {m.sender}: {m.text}" for m in unread)
-    return PromptTemplate.load("recap", "v1").render(user=user, messages=lines)
+    return load_prompt("recap_v1", user=user, messages=lines)
 
 
 def summarize_unread(messages: list[Message], llm: LLM, user: str = "you", max_retries: int = 1) -> Recap:

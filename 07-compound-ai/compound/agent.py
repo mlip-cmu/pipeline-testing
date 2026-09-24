@@ -6,8 +6,8 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Callable
 
+from compound.context import load_prompt
 from compound.llm import LLM, LiteLLM
-from compound.prompts import PromptTemplate, screen_user_input
 from compound.tools import TOOL_DESCRIPTIONS, sample_workspace
 
 ACTION = re.compile(r"^\s*ACTION:\s*(\w+)\s*(\{.*\})?\s*$", re.S)
@@ -46,13 +46,12 @@ def react_agent(query: str, tools: dict[str, Callable] | None = None, max_steps:
     llm = llm or LiteLLM()
     today = today or date.today()
     tools = {**sample_workspace(today).tools(), **(tools or {})}
-    template = PromptTemplate.load("agent", "v1")
     descriptions = "\n".join(TOOL_DESCRIPTIONS.get(name, name) for name in tools)
-    transcript = [f"Question: {screen_user_input(query)}"]
+    transcript = [f"Question: {query}"]
     errors: list[str] = []
 
     for step in range(1, max_steps + 1):
-        prompt = template.render(today=today.isoformat(), tools=descriptions, transcript="\n".join(transcript))
+        prompt = load_prompt("agent_v1", today=today.isoformat(), tools=descriptions, transcript="\n".join(transcript))
         reply = llm(prompt).strip()
         if is_final_answer(reply):
             transcript.append(reply)

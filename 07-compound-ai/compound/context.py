@@ -2,11 +2,13 @@
 
 import json
 import os
+from pathlib import Path
 
 import jinja2
 import litellm
 
 MAX_MESSAGES = 20
+PROMPTS = Path(__file__).parent / "prompts"
 
 
 class InvalidModelReply(ValueError):
@@ -32,6 +34,10 @@ def build_context(system: dict, history: list[dict], token_budget: int) -> list[
 
 def render(template: str, **values) -> str:
     return jinja2.Environment(undefined=jinja2.StrictUndefined).from_string(template).render(**values)
+
+
+def load_prompt(name: str, **values) -> str:
+    return render((PROMPTS / f"{name}.j2").read_text(), **values)
 
 
 def fits(prompt: str, token_budget: int) -> bool:
