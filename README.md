@@ -6,7 +6,7 @@ that expands on the code snippets from the slides.
 
 | Project | Slides | Topic |
 |---|---|---|
-| [`01-wrangling-bugs`](01-wrangling-bugs) | Subtle Bugs in Data Wrangling Code | Silent bugs in pandas code, and unit tests that find them |
+| [`01-wrangling-bugs`](01-wrangling-bugs) | Subtle Bugs in Data Wrangling Code | A notebook with silent bugs in pandas code; tests that miss or find them |
 | [`02-delivery-pipeline`](02-delivery-pipeline) | Pipelines are Code, Test the Modules, Orchestrating Functions, End-To-End Test, Tracking Model Qualities | Notebook → modular pipeline; unit, integration, and end-to-end tests; DVC; MLflow |
 | [`03-ml-test-score`](03-ml-test-score) | ML Test Score, Case Study: Covid-19 Detection | Data, model, infrastructure, and monitoring tests from the rubric |
 | [`04-stubbing-dependencies`](04-stubbing-dependencies) | Testing across boundaries | Decouple code from an external API; stubs and mocks |
